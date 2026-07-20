@@ -1,21 +1,21 @@
 services:
   postgres:
     image: postgres:18.4-alpine
-    container_name: naryo-postgres
+    container_name: talyra
     restart: unless-stopped
     environment:
-      POSTGRES_USER: naryo
-      POSTGRES_PASSWORD: naryo
-      POSTGRES_DB: naryo
+      POSTGRES_USER: talyra
+      POSTGRES_PASSWORD: talyra
+      POSTGRES_DB: talyra
     ports:
       - "127.0.0.1:5433:5432"
     volumes:
-      - naryo-postgres-18-data:/var/lib/postgresql
+      - talyra-postgres-18-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U naryo -d naryo"]
+      test: ["CMD-SHELL", "pg_isready -U talyra -d talyra"]
       interval: 5s
       timeout: 5s
       retries: 10
 
 volumes:
-  naryo-postgres-18-data:
+  talyra-postgres-18-data:
