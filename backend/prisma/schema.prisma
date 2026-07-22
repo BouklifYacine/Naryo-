@@ -21,7 +21,6 @@ model User {
   accounts      Account[]
   memberships   Membership[]
   payments      Payment[]    @relation("PaymentRecordedBy")
-  activityLogs  ActivityLog[] @relation("ActivityActor")
 
   @@unique([email])
   @@map("user")
@@ -106,7 +105,6 @@ model Tenant {
   payments    Payment[]
   invoices    Invoice[]
   portalTokens PortalToken[]
-  activityLogs ActivityLog[]
   outboxEvents OutboxEvent[]
 
   @@map("tenant")
@@ -437,23 +435,6 @@ model PortalToken {
 
   @@index([tenantId, prestationId])
   @@map("portal_token")
-}
-
-model ActivityLog {
-  id         String   @id @default(cuid())
-  tenantId   String   @map("tenant_id")
-  actorId    String?  @map("actor_id")
-  type       String
-  targetType String   @map("target_type")
-  targetId   String   @map("target_id")
-  metadata   Json?
-  createdAt  DateTime @default(now())
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  actor      User?    @relation("ActivityActor", fields: [actorId], references: [id], onDelete: SetNull)
-
-  @@index([tenantId, createdAt])
-  @@index([targetType, targetId])
-  @@map("activity_log")
 }
 
 model OutboxEvent {
