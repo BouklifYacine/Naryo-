@@ -23,9 +23,9 @@ export interface TenantRequest {
  * the request. Runs AFTER the global AuthGuard (apply it at controller/method
  * level with @UseGuards), so `request.user` is already populated.
  *
- * MVP assumption: a user belongs to exactly one tenant (onboarding creates one,
- * a second is a 409). When Studio/multi-tenant arrives, this is where we'll read
- * the active tenant from a header or the session instead of findFirst.
+ * MVP assumption: a user belongs to exactly one tenant (creating a second one
+ * is a conflict). When Studio/multi-tenant arrives, this is where we'll read the
+ * active tenant from a header or the session instead of findFirst.
  */
 @Injectable()
 export class TenantGuard implements CanActivate {
@@ -46,9 +46,7 @@ export class TenantGuard implements CanActivate {
       select: { tenantId: true, role: true },
     });
     if (!membership) {
-      throw new ForbiddenException(
-        'No tenant yet — complete onboarding first.',
-      );
+      throw new ForbiddenException('No professional workspace exists yet.');
     }
 
     // Hand the resolved context to the rest of the pipeline (decorators, service).

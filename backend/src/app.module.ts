@@ -3,7 +3,7 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { OnboardingModule } from './onboarding/onboarding.module';
+import { TenantModule } from './tenant/tenant.module';
 import { MeModule } from './me/me.module';
 import { auth } from './auth';
 
@@ -11,7 +11,7 @@ import { auth } from './auth';
   imports: [
     PrismaModule,
     AuthModule.forRoot({ auth }),
-    OnboardingModule,
+    TenantModule,
     MeModule,
   ],
   controllers: [AppController],
