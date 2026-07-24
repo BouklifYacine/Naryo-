@@ -1,4 +1,5 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ORPCError } from '@orpc/server';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 
@@ -12,7 +13,7 @@ export class TenantService {
     });
 
     if (existingMembership) {
-      throw new ConflictException('User already has a tenant');
+      throw new ORPCError('CONFLICT', { message: 'User already has a tenant' });
     }
 
     return this.prisma.tenant.create({
